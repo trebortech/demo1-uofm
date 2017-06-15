@@ -8,13 +8,14 @@ from __future__ import absolute_import
 import salt.utils
 
 
-def rollback(package=None):
+def rollback(package=None, common=None):
 
     if package is None:
         return "You need to supply the package path that you would like to install"
 
     saltminion = {}
     saltminion['saltminion'] = package
+    saltminion['saltcommont'] = common
     sources = [saltminion]
     ret = __salt__['pkg.install'](sources=sources)
 
