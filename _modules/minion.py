@@ -10,7 +10,7 @@ import salt.utils
 
 def rollback(package=None):
 
-    if package = None:
+    if package is None:
         return "You need to supply the package path that you would like to install"
 
     saltminion = {}
