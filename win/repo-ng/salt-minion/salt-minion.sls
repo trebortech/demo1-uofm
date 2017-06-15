@@ -9,9 +9,9 @@ salt-minion:
     uninstall_flags: ' /qn'
   2016.11.5:
     installer: 'salt://files/Salt-Minion-2016.11.5-AMD64-Setup.exe'
-    full_name: '7-Zip 9.38 (x64 edition)'
+    full_name: 'Salt-Minion 2016-11-5'
     reboot: False
     install_flags: ' /q '
-    msiexec: True
+    msiexec: False
     uninstaller: 'salt://files/Salt-Minion-2016.11.5-AMD64-Setup.exe'
     uninstall_flags: ' /qn'
