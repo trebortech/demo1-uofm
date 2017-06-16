@@ -21,21 +21,26 @@ def rollback(package=None, common=None):
     saltminion = {'saltminion': package}
 
     if salt.utils.is_windows():
-        sources = [saltminion]
+        # copy file over
+        __salt__['cp.get_file'](package, "c:\\salt\\var\\cache\\salt-minion.exe")
+
+        '''
+        Due to problems when installing when service is running I utilized
+        schtasks to schedule the install.
+        '''
+        minioninstall = []
+        cmdinstall = "c:\\salt\\var\\cache\\salt-minion.exe /S"
+        minioninstall.append(r"$ts = (get-date).addminutes(1).tostring('HH:mm')")
+        minioninstall.append(r"schtasks.exe /create /SC ONCE /ST $ts /TN restartsalt /TR '{0}' /F".format(cmdinstall))
+        minioncommand = ';'.join(minioninstall)
+        ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
     else:
         saltcommon = {'saltcommon': common}
         sources = [saltcommon, saltminion]
+        ret = __salt__['pkg.install'](sources=sources)
 
-    ret1 = __salt__['pkg.install'](sources=sources)
-
-    if salt.utils.is_windows():
-        restartcmd = []
-        restartcmd.append(r"$ts = (get-date).addminutes(1).tostring('H:mm')")
-        restartcmd.append(r"schtasks.exe /create /SC ONCE /ST $ts /TN restartsalt /TR 'restart-service salt-minion'")
-        command = ';'.join(restartcmd)
-    else:
+    if not salt.utils.is_windows():
         command = 'echo service salt-minion restart | at now + 1 minute'
+        ret = __salt__['cmd.run'](command)
 
-    ret2 = __salt__['cmd.run'](command)
-
-    return ret1 + ret2
+    return ret
