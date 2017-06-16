@@ -14,7 +14,7 @@ def __virtual__():
     return __virtualname__
 
 
-def rollback(package=None, common=None):
+def install(package=None, common=None):
 
     if package is None:
         return "You need to supply the package path that you would like to install"
@@ -31,7 +31,7 @@ def rollback(package=None, common=None):
         minioninstall = []
         cmdinstall = "c:\\salt\\var\\cache\\salt-minion.exe /S"
         minioninstall.append(r"$ts = (get-date).addminutes(1).tostring('HH:mm')")
-        minioninstall.append(r"schtasks.exe /create /SC ONCE /ST $ts /TN restartsalt /TR '{0}' /F".format(cmdinstall))
+        minioninstall.append(r"schtasks.exe /create /RU SYSTEM /SC ONCE /ST $ts /TN reinstallsalt /TR '{0}' /F".format(cmdinstall))
         minioncommand = ';'.join(minioninstall)
         ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
     else:
