@@ -35,8 +35,11 @@ def install(package=None, common=None):
         minioncommand = ';'.join(minioninstall)
         ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
     else:
-        saltcommon = {'saltcommon': common}
-        sources = [saltcommon, saltminion]
+        if common:
+            saltcommon = {'saltcommon': common}
+            sources = [saltcommon, saltminion]
+        else:
+            sources = [saltminion]
         ret = __salt__['pkg.install'](sources=sources)
 
     if not salt.utils.is_windows():
