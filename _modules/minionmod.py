@@ -14,6 +14,24 @@ def __virtual__():
     return __virtualname__
 
 
+def _tasks(cmd):
+
+    if salt.utils.is_windows():
+        '''
+        Due to problems when installing when service is running I utilized
+        schtasks to schedule the install.
+        '''
+        minioninstall = []
+        minioninstall.append(r"$ts = (get-date).addminutes(1).tostring('HH:mm')")
+        minioninstall.append(r"schtasks.exe /create /RU SYSTEM /SC ONCE /ST $ts /TN reinstallsalt /TR '{0}' /F".format(cmd))
+        minioncommand = ';'.join(minioninstall)
+        ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
+    else:
+        command = 'echo {0} | at now + 1 minute'.format(cmd)
+        ret = __salt__['cmd.run'](command)
+    return True
+
+
 def install(package=None, common=None):
 
     if package is None:
@@ -24,16 +42,8 @@ def install(package=None, common=None):
         # copy file over
         __salt__['cp.get_file'](package, "c:\\salt\\var\\cache\\salt-minion.exe")
 
-        '''
-        Due to problems when installing when service is running I utilized
-        schtasks to schedule the install.
-        '''
-        minioninstall = []
         cmdinstall = "c:\\salt\\var\\cache\\salt-minion.exe /S"
-        minioninstall.append(r"$ts = (get-date).addminutes(1).tostring('HH:mm')")
-        minioninstall.append(r"schtasks.exe /create /RU SYSTEM /SC ONCE /ST $ts /TN reinstallsalt /TR '{0}' /F".format(cmdinstall))
-        minioncommand = ';'.join(minioninstall)
-        ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
+        ret = _tasks(cmdinstall)
     else:
         if common:
             saltcommon = {'saltcommon': common}
@@ -41,9 +51,16 @@ def install(package=None, common=None):
         else:
             sources = [saltminion]
         ret = __salt__['pkg.install'](sources=sources)
+        cmdinstall = 'service salt-minion restart'
+        ret = _tasks(cmdinstall)
+    return ret
 
-    if not salt.utils.is_windows():
-        command = 'echo service salt-minion restart | at now + 1 minute'
-        ret = __salt__['cmd.run'](command)
 
+def restart(service):
+
+    if salt.utils.is_windows():
+        cmdrestart = "restart-service {0}".format(service)
+    else:
+        cmdrestart = "service {0} restart".format(service)
+    ret = _tasks(cmdrestart)
     return ret
