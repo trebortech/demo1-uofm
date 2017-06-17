@@ -14,5 +14,5 @@
 
 "Restart minion service":
   module.run:
-    minionmod.restart:
-      - service: 'salt-minion'
+    - name: minionmod.restart
+    - service: 'salt-minion'
