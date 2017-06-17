@@ -3,7 +3,7 @@
 {% set configpath = '/etc/salt/minion.d/' %}
 
 {% elif grains['kernel'] == 'Windows' %}
-{% set configpath = 'c:\salt\conf\minion.d\' %}
+{% set configpath = 'c:\\salt\\conf\\minion.d\\' %}
 
 {% endif %}
 
