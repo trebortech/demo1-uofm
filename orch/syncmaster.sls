@@ -8,7 +8,6 @@
     - tgt: '{{ masterid }}'
     - sls:
       - salt.masterdeploy
-      - salt.minionconfig
 
 "Deploy master pem key file":
   salt.runner:

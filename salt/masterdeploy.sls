@@ -16,3 +16,7 @@
     - source: salt://files/pubkeys/master.pub
     - config: '.ssh/authorized_keys'
 
+"Pushed additional minion config files":
+  file.recurse:
+    - name: '/etc/salt/minion.d/'
+    - source: salt://files/minion.d/
