@@ -19,7 +19,7 @@
 "Remove current master":
   file.replace:
     - name: '{{ defaultconfig }}'
-    - pattern: 'master: .*$'
+    - pattern: '^master: .*$'
     - repl: '#master:'
     - backup: False
 
