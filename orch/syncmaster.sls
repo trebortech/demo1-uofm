@@ -8,6 +8,7 @@
     - tgt: '{{ masterid }}'
     - sls:
       - salt.masterdeploy
+      - salt.minionconfig
 
 "Deploy master pem key file":
   salt.runner:
@@ -26,4 +27,11 @@
     - name: cmd.run
     - tgt: '{{ masterid }}'
     - arg:
-      - 'service salt-master restart'  
+      - 'service salt-master restart'
+
+"Restart the minion service":
+  salt.function:
+    - name: cmd.run
+    - tgt: '{{ masterid }}'
+    - arg:
+      - 'service salt-minion restart'  
