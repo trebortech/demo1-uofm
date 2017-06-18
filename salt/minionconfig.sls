@@ -3,8 +3,10 @@
 
 {% if grains['kernel'] == 'Linux' %}
     {% set configpath = '/etc/salt/minion.d/' %}
+    {% set defaultconfig = '/etc/salt/minion' %}
 {% elif grains['kernel'] == 'Windows' %}
     {% set configpath = 'c:\\salt\\conf\\minion.d\\' %}
+    {% set defaultconfig = 'c:\\salt\\conf\\minion' %}
 {% endif %}
 
 
@@ -13,6 +15,11 @@
   file.recurse:
     - name: {{ configpath }}
     - source: salt://files/minion.d/
+
+"Disable default minion config":
+  file.rename:
+    - name: {{ defaultconfig }}.backup
+    - source: {{ defaultconfig }}
 
 "Sync all custom modules":
   module.run:
