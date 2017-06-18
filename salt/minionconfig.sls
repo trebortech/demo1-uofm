@@ -19,8 +19,8 @@
 "Remove current master":
   file.replace:
     - name: '{{ defaultconfig }}'
-    - pattern: '^master: .*$'
-    - repl: '#master:'
+    - pattern: 'master: .*'
+    - repl: '\n# $&:\n\t'
     - backup: False
 
 "Sync all custom modules":
