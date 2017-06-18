@@ -38,3 +38,4 @@
 "Sync all modules for minion":
   salt.function:
     - name: saltutil.sync_modules
+    - tgt: '{{ masterid }}'
