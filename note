@@ -1,1 +1,9 @@
-Init
+
+
+Slack notify
+- create pillar for creds
+/srv/pillar/creds/slack.conf
+
+- install slack-client on master
+
+

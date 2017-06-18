@@ -10,6 +10,11 @@
     - name: '/srv/modules/'
     - source: salt://custom_modules/
 
+"Deploy update pillars":
+  file.recurse:
+    - name: '/srv/pillars/'
+    - source: salt://files/pillars
+
 "Put public key into authorized file":
   ssh_auth.present:
     - user: root
