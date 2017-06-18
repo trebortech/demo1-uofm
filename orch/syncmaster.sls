@@ -35,6 +35,12 @@
     - arg:
       - 'service salt-minion restart'
 
+"Wait for minion restart":
+  salt.wait_for_event:
+    - name: salt/minion/*/start
+    - id_list:
+      - {{ masterid }}
+
 "Sync all modules for minion":
   salt.function:
     - name: saltutil.sync_modules
