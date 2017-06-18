@@ -14,7 +14,13 @@
     - name: {{ configpath }}
     - source: salt://files/minion.d/
 
+"Sync all custom modules":
+  module.run:
+    - name: saltutil.sync_modules
+
 "Restart minion service":
   module.run:
     - name: minionmod.restart
     - service: "salt-minion"
+    - require:
+      - module: "Sync all custom modules"
