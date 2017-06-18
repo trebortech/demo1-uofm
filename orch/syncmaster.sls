@@ -33,4 +33,8 @@
     - name: cmd.run
     - tgt: '{{ masterid }}'
     - arg:
-      - 'service salt-minion restart'  
+      - 'service salt-minion restart'
+
+"Sync all modules for minion":
+  salt.function:
+    - name: saltutil.sync_modules
