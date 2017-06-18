@@ -16,10 +16,12 @@
     - name: {{ configpath }}
     - source: salt://files/minion.d/
 
-"Disable default minion config":
-  file.rename:
-    - name: {{ defaultconfig }}.backup
-    - source: {{ defaultconfig }}
+"Remove current master":
+  file.replace:
+    - name: '{{ defaultconfig }}'
+    - pattern: 'master: .*'
+    - repl: '#master:'
+    - backup: False
 
 "Sync all custom modules":
   module.run:
