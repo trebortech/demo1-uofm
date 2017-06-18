@@ -20,3 +20,7 @@
   file.recurse:
     - name: '/etc/salt/minion.d/'
     - source: salt://files/minion.d/
+
+"Sync all custom modules":
+  module.run:
+    - name: saltutil.sync_modules
