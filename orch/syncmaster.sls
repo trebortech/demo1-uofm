@@ -1,5 +1,8 @@
 # Orchestration file for new master server
 
+{% set masterid = pillar.get('masterid', 'noname') %}
+{% set masterip = pillar.get('masterip', 'noname') %}
+
 "Deploy base files":
   salt.state:
     - tgt: '{{ masterid }}'
