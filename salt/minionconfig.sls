@@ -20,7 +20,7 @@
   file.replace:
     - name: '{{ defaultconfig }}'
     - pattern: 'master: .*'
-    - repl: '\n#master: \n\t'
+    - repl: '\n#master: \n'
     - backup: False
 
 "Sync all custom modules":
