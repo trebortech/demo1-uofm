@@ -130,7 +130,7 @@ def rsync(src,
         salt '*' rsync.rsync {src} {dst} {delete=True} {excludefrom=/xx.ini} {rsh}
 
         salt '*' rsync.rsync {src} {dst} {delete=True} {excludefrom=/xx.ini} additional_opts='["--partial", "--bwlimit=5000"]'
-    
+
     if not src:
         src = __salt__['config.option']('rsync.src')
     if not dst:
@@ -172,7 +172,7 @@ def rsync(src,
     try:
         args = ['python_shell=False']
 
-        return = __salt__['salt.cmd'](fun=cmd, args=args, kwargs=kwargs)
+        return __salt__['salt.cmd'](fun=cmd, args=args, kwargs=kwargs)
 
     except (IOError, OSError) as exc:
         raise CommandExecutionError(exc.strerror)
