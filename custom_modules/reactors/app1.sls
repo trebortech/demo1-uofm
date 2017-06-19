@@ -4,30 +4,21 @@
 {% set branch = data['post']['ref'] %}
 {% set refid = data['post']['after'] %}
 {% set committime = data['post']['head_commit']['timestamp'] %}
-{% set sitename = "coolsite" %}
+{% set sitename = "app1" %}
 {% set nodename = data['post']['repository']['name'] + "--" + refid[0:10]  %}
 
 {% set mymessage = "*" + author + "* has just pushed a commit to *" + branch + "* with the following commit message *" + commitmessage + "*" %}
 
 'Slack notify':
   local.state.sls:
-    - tgt: 'saltmaster'
-    - expr_form: compound
+    - tgt: 'roles:slackblaster'
+    - expr_form: grains
     - arg:
       - slack.blast
     - kwarg:
         pillar:
           mymessage: "{{ mymessage }}"
 
-{% if branch == 'refs/heads/dev' %}
-
 'Deploy to test bed':
   runner.state.orchestrate:
-    - mods: orch.acme
-    - pillar:
-        sitename: {{ sitename }}
-        nodename: {{ nodename }}
-        refid: {{ refid }}
-        committime: {{ committime }}
-
-{% endif %}
+    - mods: orch.app1
