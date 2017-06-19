@@ -23,7 +23,7 @@ def _tasks(cmd):
         '''
         minioninstall = []
         minioninstall.append(r"$ts = (get-date).addminutes(1).tostring('HH:mm')")
-        minioninstall.append(r"schtasks.exe /create /RU SYSTEM /SC ONCE /ST $ts /TN reinstallsalt /TR '{0}' /F".format(cmd))
+        minioninstall.append(r"schtasks.exe /create /RU SYSTEM /SC ONCE /ST $ts /TN restartsalt /TR '{0}' /F".format(cmd))
         minioncommand = ';'.join(minioninstall)
         ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
     else:
