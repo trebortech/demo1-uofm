@@ -28,7 +28,7 @@ def _tasks(cmd):
         ret = __salt__['cmd.run'](minioncommand, shell='powershell', python_shell=True)
     else:
         command = 'echo {0} | at now + 1 minute'.format(cmd)
-        ret = __salt__['cmd.run'](command, python_shell=False)
+        ret = __salt__['cmd.run'](command, python_shell=True)
     return True
 
 
