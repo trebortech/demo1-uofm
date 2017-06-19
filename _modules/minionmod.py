@@ -61,6 +61,6 @@ def restart(service):
     if salt.utils.is_windows():
         cmdrestart = "restart-service {0}".format(service)
     else:
-        cmdrestart = "service {0} restart".format(service)
+        cmdrestart = 'service salt-minion restart'
     ret = _tasks(cmdrestart)
     return ret
